@@ -10,6 +10,22 @@ class CounterScreen extends StatefulWidget {
 
 class _CounterScreenState extends State<CounterScreen> {
   int counter = 10;
+
+  void increase() {
+    counter++;
+    setState(() {});
+  }
+
+  void clear() {
+    counter = 0;
+    setState(() {});
+  }
+
+  void decrease() {
+    counter--;
+    setState(() {});
+  }
+
   //Variable, Propiedad
   @override
   Widget build(BuildContext context) {
@@ -37,37 +53,47 @@ class _CounterScreenState extends State<CounterScreen> {
       // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            child: const Icon(Icons.exposure_plus_1),
-            onPressed: () {
-              // print('Hola Mundo');
-              counter++;
-              setState(() {});
-            },
-          ),
-          const SizedBox(width: 20),
-          FloatingActionButton(
-            child: const Icon(Icons.clear),
-            onPressed: () {
-              // print('Hola Mundo');
-              counter = 0;
-              setState(() {});
-            },
-          ),
-          const SizedBox(width: 20),
-          FloatingActionButton(
-            child: const Icon(Icons.exposure_minus_1),
-            onPressed: () {
-              // print('Hola Mundo');
-              counter--;
-              setState(() {});
-            },
-          ),
-        ],
+      floatingActionButton: CustomFloatingAction(
+        increaseFn: increase, 
+        clearFn: clear,
+        decreaseFn: decrease, //Mandar la referencia a la función
       ),
+    );
+  }
+}
+
+class CustomFloatingAction extends StatelessWidget {
+  final Function increaseFn;
+  final Function clearFn;
+  final Function decreaseFn;
+
+  const CustomFloatingAction({
+    Key? key,
+    required this.increaseFn,
+    required this.clearFn,
+    required this.decreaseFn,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FloatingActionButton(
+          child: const Icon(Icons.exposure_plus_1),
+          onPressed: () => increaseFn(),
+        ),
+        // const SizedBox(width: 20),
+        FloatingActionButton(
+          child: const Icon(Icons.clear),
+          onPressed: () => clearFn(),
+        ),
+        // const SizedBox(width: 20),
+        FloatingActionButton(
+          child: const Icon(Icons.exposure_minus_1),
+          onPressed: () => decreaseFn(),
+        ),
+      ],
     );
   }
 }
